@@ -2,11 +2,12 @@
 
 namespace App\Controller;
 
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class PokerController
+class PokerController extends AbstractController
 {
 
     //je créé une route pour mon url
@@ -30,9 +31,9 @@ class PokerController
         // mettre dans l'url /poker?age=X
 
         if ($age<18){
-            return new Response("Tu n'as pas l'âge requis");
+            return $this->render('valid.html.twig');
         }else
-            return new Response("Tu as l'âge requis");
+            return $this->render('notValid.html.twig');
 
 
     }

@@ -31,9 +31,9 @@ class PokerController extends AbstractController
         // mettre dans l'url /poker?age=X
 
         if ($age<18){
-            return $this->render('valid.html.twig');
+            return $this->render('poker/ageValid.html.twig');
         }else
-            return $this->render('notValid.html.twig');
+            return $this->render('poker/ageNotValid.html.twig');
 
 
     }

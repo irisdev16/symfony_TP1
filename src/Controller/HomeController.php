@@ -2,11 +2,12 @@
 
 namespace App\Controller;
 
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 
 //je créé une classe HomeController
-class HomeController
+class HomeController extends AbstractController
 {
 
     //je créé une Route, c'est une sorte d'annotation (avec le #) qui permet de dire que
@@ -18,6 +19,6 @@ class HomeController
     //ici, j'ai une réponse http qui se traduit par du html
     //elle permet d'afficher ici le titre "Page Accueil" sur mon navigateur
     public function home() {
-        return new Response('<h1>Page Accueil</h2>');
+        return $this->render('home.html.twig');
     }
 }

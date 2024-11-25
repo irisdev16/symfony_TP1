@@ -27,6 +27,8 @@ class PokerController
         $request = Request::createFromGlobals();
         $age = $request->query->get('age');
 
+        // mettre dans l'url /poker?age=X
+
         if ($age<18){
             return new Response("Tu n'as pas l'âge requis");
         }else

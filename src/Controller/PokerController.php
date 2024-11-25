@@ -32,8 +32,7 @@ class PokerController
         }else
             return new Response("Tu as l'âge requis");
 
-        //je retourne une reponse HTML
-        return new Response('Bienvenue sur le site de Poker');
+
     }
 
 }

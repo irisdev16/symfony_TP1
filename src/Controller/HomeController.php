@@ -19,6 +19,10 @@ class HomeController extends AbstractController
     //ici, j'ai une réponse http qui se traduit par du html
     //elle permet d'afficher ici le titre "Page Accueil" sur mon navigateur
     public function home() {
+        // La méthode render de la classe AbstractController récupère
+        // le fichier twig passé en paramètre dans le dossier template
+        // ELle le convertit en HTML et crée une réponse valide
+        // En status HTTP 200, et en body le HTML généré
         return $this->render('home.html.twig');
     }
 }

@@ -15,7 +15,7 @@ class PokerController
 
     //je créé une méthode homePoker dans laquelle j'appelle la
     //méthode createFromGlobals.
-    //je n'ai pas besoin de faire une instance de classe avec "New"
+    //je n'ai pas besoin de faire une instance de classe avec "New", ici il y a les deux points :
     //avec cette méthode Request et CreateFromGLobals, je récupère
     // toutes les données de requêtes HTTP comme POST, GET, SESSION, etc...
     public function homePoker(){
@@ -27,7 +27,10 @@ class PokerController
         $request = Request::createFromGlobals();
         $age = $request->query->get('age');
 
-
+        if ($age<18){
+            return new Response("Tu n'as pas l'âge requis");
+        }else
+            return new Response("Tu as l'âge requis");
 
         //je retourne une reponse HTML
         return new Response('Bienvenue sur le site de Poker');

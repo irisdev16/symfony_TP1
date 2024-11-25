@@ -1,0 +1,46 @@
+*{
+    box-sizing: border-box;
+}
+
+ul{
+    display: flex;
+    justify-content: space-around;
+}
+
+li{
+    font-family: Baskerville, sans-serif;
+    list-style: none;
+    width: 10%;
+    border-radius: 10px;
+    background-color: aquamarine;
+    text-align: center;
+    color: darkblue;
+    font-size: 30px;
+}
+
+a{
+    text-decoration: none;
+}
+
+
+.articles-container{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-top: 20%;
+
+}
+
+.article {
+    width: 33.33%;
+    text-align: center;
+    background-color: lightblue;
+    font-family: Baskerville, sans-serif;
+    border: 1px solid blue;
+}
+
+footer{
+    text-align: center;
+    margin-top: 20%;
+    font-family: Baskerville, sans-serif;
+}

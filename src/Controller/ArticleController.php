@@ -6,8 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
 
-// ??? je ne sais pas comment expliquer cette ligne,
-//je fais hériter àa ma classe ArticleController la classe AbstractController ?
+
+//ma classe ArticleController hérite de la classe AbstractController (classe générée par symfony)
 class ArticleController extends AbstractController
 {
     //je créé ma route, lorsque que /article sera appelé dans mon url,
@@ -45,6 +45,13 @@ class ArticleController extends AbstractController
                 'title' => 'Article 5',
                 'content' => 'Content of article 5',
                 'image' => 'https://static.vecteezy.com/system/resources/thumbnails/012/176/986/small_2x/a-3d-rendering-image-of-grassed-hill-nature-scenery-png.png',
+            ],
+            [
+                'id' => 6,
+                'title' => 'Article 6',
+                'content' => 'Content of article 6',
+                'image' => 'https://static.vecteezy.com/system/resources/thumbnails/012/176/986/small_2x/a-3d-rendering-image-of-grassed-hill-nature-scenery-png.png',
+
             ]
 
         ];

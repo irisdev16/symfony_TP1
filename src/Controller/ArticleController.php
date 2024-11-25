@@ -5,8 +5,14 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
+
+// ??? je ne sais pas comment expliquer cette ligne,
+//je fais hériter àa ma classe ArticleController la classe AbstractController ?
 class ArticleController extends AbstractController
 {
+    //je créé ma route, lorsque que /article sera appelé dans mon url,
+    //c'est le controlleur ci dessous qui sera appelée
+    //je créé la méthode articles qui contient mon tableu d'articles
     #[Route('/article', name: 'article_list')]
     public function articles(){
         $articles = [
@@ -43,6 +49,8 @@ class ArticleController extends AbstractController
 
         ];
 
+        //ici, la méthode render de la classe AbstractController instanciée en haut
+        //me permet d'appeler ma vue twig et donc d'afficher mon html ainsi que mon tableau d'articles
         return $this->render('article-list.html.twig',[
             'articles' => $articles
         ]);

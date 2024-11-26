@@ -70,7 +70,8 @@ class ArticleController extends AbstractController
     //c'est ma méthode si dessous qui s'affichera
     #[Route('/article', 'article_show')]
     //je créé une nouvelle méthode articleShow afin de récupérer mes articles qui contient mon tableau d'articles
-    public function articleShow() {
+    public function articleShow()
+    {
 
 
 
@@ -130,20 +131,19 @@ class ArticleController extends AbstractController
         //je boucle sur mon tableau d'articles pour récupéré chaque id
         //si l'ID de mon article dans mon tableau correspond à l'id de mon url (récupéré avec $id plus haut)
         foreach ($articles as $article) {
-            if ($article['id'] === (int) $id) {
+            if ($article['id'] === (int)$id) {
                 //alors je remplace ma variable null par l'article entier correspondant a l'ID entré en URL
                 $articleFound = $article;
             }
 
-
-
+        }
             //j'appelle ici ma vue twig qui me permettra d'afficher du hmtl dans mon navigateur
             //ici j'utilise la méthode "render" qui prend donc en paramètre mon fichier twig
             // et un tableau contenant les variables que je veux utiliser dans mon fichier twig
             return $this->render('article_show.html.twig', [
                 'article' => $articleFound
             ]);
-        }
+
 
     }
 

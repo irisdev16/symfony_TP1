@@ -147,4 +147,17 @@ class ArticleController extends AbstractController
 
     }
 
+    #[Route('/articles/search-results','article_search_results')]
+    //plutot que d'utiliser la classe Request
+    //je passe cette classe dans les paramètre de ma méthode = système d'instanciation automatique de symfony
+        //Request est le type de la classe que je veux
+        //$request est ma variable sur laquelle ma classe sera instanciée et stockée == autowire
+    public function articleSearchResults(Request $request){
+
+        $search = $request->query->get('search');
+
+        dump($search);die;
+
+    }
+
 }

@@ -14,7 +14,7 @@ class ArticleController extends AbstractController
     //je créé ma route, lorsque que /article sera appelé dans mon url,
     //c'est le controlleur ci dessous qui sera appelée
     //je créé la méthode articles qui contient mon tableau d'articles
-    #[Route('/article', name: 'article_list')]
+    #[Route('/articles', name: 'article_list')]
     public function articles(){
         $articles = [
             [
@@ -68,19 +68,19 @@ class ArticleController extends AbstractController
 
     //je créé une route pour l'url en indiquant que lorsque je tape /article dans mon url,
     //c'est ma méthode si dessous qui s'affichera
-    #[Route('/article', 'article_show')]
+    //l'écriture /{id} me permet de récupérer l'id directement aprèes le slash dans mon url
+
+    #[Route('/article/{id}', 'article_show')]
     //je créé une nouvelle méthode articleShow afin de récupérer mes articles qui contient mon tableau d'articles
-    public function articleShow()
+        //MAIS attention, je dois rentrer l'id en paramètre de ma fonction "articleShow"
+        //symfony gère le reste en récupérant automtiquement "id" dans l'url
+        //plus besoin du request comme fait dans la fonction précédente
+        //le routeur acceptera toutes les urls qui ont la forme "/article/quelquechose",ou "/article/3", ou
+        // "/article/46" ..
+
+    public function articleShow($id)
     {
 
-
-
-        //je prend mon instance de classe Request (généré par symfony)
-        //je l'utilise pour pouvoir récupérer mes données GET (ici c'est GET mais cette classe me permet de
-        //récupérer n'importe quelle données, GET, POST, SESSION etc...)
-
-        $request = Request::createFromGlobals();
-        $id = $request->request->get('id');
 
         $articles = [
             [

@@ -11,6 +11,13 @@
                 {% for article in articles %}
                         <article class="article">
                                 <p> {{ article.title }}</p>
+                            {# Ici, path est une fonction issu de twig qui génère une URL pour un route définie
+                            - path prend en paramètre une route et un id ici
+                            - la route ici c'est 'article_show', donc on vient prendre les infos du fichier twig "article_show"
+                            - et on veut récupéré l'id présent dans l'url et l'associer à l'article correspondant
+                            - "afficher l'article" est le texte présent en html sur lequel cliquer
+                            #}
+                            <a href="{{ path('article_show', {id:article.id}) }}">Afficher l'article</a>
                         </article>
                 {% endfor %}
 

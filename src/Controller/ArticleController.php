@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 
@@ -12,7 +13,7 @@ class ArticleController extends AbstractController
 {
     //je créé ma route, lorsque que /article sera appelé dans mon url,
     //c'est le controlleur ci dessous qui sera appelée
-    //je créé la méthode articles qui contient mon tableu d'articles
+    //je créé la méthode articles qui contient mon tableau d'articles
     #[Route('/article', name: 'article_list')]
     public function articles(){
         $articles = [
@@ -61,6 +62,89 @@ class ArticleController extends AbstractController
         return $this->render('article-list.html.twig',[
             'articles' => $articles
         ]);
+    }
+
+
+
+    //je créé une route pour l'url en indiquant que lorsque je tape /article dans mon url,
+    //c'est ma méthode si dessous qui s'affichera
+    #[Route('/article', 'article_show')]
+    //je créé une nouvelle méthode articleShow afin de récupérer mes articles qui contient mon tableau d'articles
+    public function articleShow() {
+
+
+
+        //je prend mon instance de classe Request (généré par symfony)
+        //je l'utilise pour pouvoir récupérer mes données GET (ici c'est GET mais cette classe me permet de
+        //récupérer n'importe quelle données, GET, POST, SESSION etc...)
+
+        $request = Request::createFromGlobals();
+        $id = $request->request->get('id');
+
+        $articles = [
+            [
+                'id' => 1,
+                'title' => 'Article 1',
+                'content' => 'Content of article 1',
+                'image' => 'https://static.vecteezy.com/system/resources/thumbnails/012/176/986/small_2x/a-3d-rendering-image-of-grassed-hill-nature-scenery-png.png',
+            ],
+            [
+                'id' => 2,
+                'title' => 'Article 2',
+                'content' => 'Content of article 2',
+                'image' => 'https://static.vecteezy.com/system/resources/thumbnails/012/176/986/small_2x/a-3d-rendering-image-of-grassed-hill-nature-scenery-png.png',
+            ],
+            [
+                'id' => 3,
+                'title' => 'Article 3',
+                'content' => 'Content of article 3',
+                'image' => 'https://static.vecteezy.com/system/resources/thumbnails/012/176/986/small_2x/a-3d-rendering-image-of-grassed-hill-nature-scenery-png.png',
+            ],
+            [
+                'id' => 4,
+                'title' => 'Article 4',
+                'content' => 'Content of article 4',
+                'image' => 'https://static.vecteezy.com/system/resources/thumbnails/012/176/986/small_2x/a-3d-rendering-image-of-grassed-hill-nature-scenery-png.png',
+            ],
+            [
+                'id' => 5,
+                'title' => 'Article 5',
+                'content' => 'Content of article 5',
+                'image' => 'https://static.vecteezy.com/system/resources/thumbnails/012/176/986/small_2x/a-3d-rendering-image-of-grassed-hill-nature-scenery-png.png',
+            ],
+            [
+                'id' => 6,
+                'title' => 'Article 6',
+                'content' => 'Content of article 6',
+                'image' => 'https://static.vecteezy.com/system/resources/thumbnails/012/176/986/small_2x/a-3d-rendering-image-of-grassed-hill-nature-scenery-png.png',
+
+            ]
+
+        ];
+
+
+
+        //j'initie une variable articleFound et je la met a null
+        $articleFound = null;
+
+        //je boucle sur mon tableau d'articles pour récupéré chaque id
+        //si l'ID de mon article dans mon tableau correspond à l'id de mon url (récupéré avec $id plus haut)
+        foreach ($articles as $article) {
+            if ($article['id'] === (int) $id) {
+                //alors je remplace ma variable null par l'article entier correspondant a l'ID entré en URL
+                $articleFound = $article;
+            }
+
+
+
+            //j'appelle ici ma vue twig qui me permettra d'afficher du hmtl dans mon navigateur
+            //ici j'utilise la méthode "render" qui prend donc en paramètre mon fichier twig
+            // et un tableau contenant les variables que je veux utiliser dans mon fichier twig
+            return $this->render('article_show.html.twig', [
+                'article' => $articleFound
+            ]);
+        }
+
     }
 
 }

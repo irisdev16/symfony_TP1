@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block metatitle %}
+    Catégories | Super Blog
+{% endblock metatitle %}
+
+{% block main %}
+
+  <h1>Toutes les catégories</h1>
+
+    {# comme mon entité category est une table, je dois le parcourir pour afficher les éléments du tableau #}
+    {% for category in category %}
+        <p>{{ category.title }}</p>
+        <p>{{ category.color }}</p>
+    {% endfor %}
+
+
+{% endblock main %}
+
+

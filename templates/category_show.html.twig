@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block metatitle %}
+{{ category.title }} | Super Blog
+{% endblock metatitle %}
+
+{% block main %}
+
+    <h1>Toutes les catégories</h1>
+
+    <article>
+        <h1> {{ category.title }}</h1>
+        <p> {{ category.color }}</p>
+    </article>
+
+
+{% endblock main %}

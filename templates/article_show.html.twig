@@ -11,6 +11,7 @@
         <article class="article">
             <h2>{{ article.title }}</h2>
             <p> {{ article.content }}</p>
+            <img src="{{ article.image }}" alt="image de dés">
             <p> Date de création : {{ article.createdAt | date('d/m/y h:i:s') }}</p>
         </article>
 

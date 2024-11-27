@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\ArticleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,49 +16,15 @@ class ArticleController extends AbstractController
     //je créé ma route, lorsque que /article sera appelé dans mon url,
     //c'est le controlleur ci dessous qui sera appelée
     //je créé la méthode articles qui contient mon tableau d'articles
+    //la classe articleRepository est instancié automatiquement quand j'ai initié mon entité Article
+    //elle me permet entre autres de récupérer les articles créés en BDD, comme avec un SELECT *
     #[Route('/articles', name: 'article_list')]
-    public function articles(): Response
+    public function articles(ArticleRepository $articleRepository): Response
     {
-        $articles = [
-            [
-                'id' => 1,
-                'title' => 'Article 1',
-                'content' => 'Content of article 1',
-                'image' => 'https://static.vecteezy.com/system/resources/thumbnails/012/176/986/small_2x/a-3d-rendering-image-of-grassed-hill-nature-scenery-png.png',
-            ],
-            [
-                'id' => 2,
-                'title' => 'Article 2',
-                'content' => 'Content of article 2',
-                'image' => 'https://static.vecteezy.com/system/resources/thumbnails/012/176/986/small_2x/a-3d-rendering-image-of-grassed-hill-nature-scenery-png.png',
-            ],
-            [
-                'id' => 3,
-                'title' => 'Article 3',
-                'content' => 'Content of article 3',
-                'image' => 'https://static.vecteezy.com/system/resources/thumbnails/012/176/986/small_2x/a-3d-rendering-image-of-grassed-hill-nature-scenery-png.png',
-            ],
-            [
-                'id' => 4,
-                'title' => 'Article 4',
-                'content' => 'Content of article 4',
-                'image' => 'https://static.vecteezy.com/system/resources/thumbnails/012/176/986/small_2x/a-3d-rendering-image-of-grassed-hill-nature-scenery-png.png',
-            ],
-            [
-                'id' => 5,
-                'title' => 'Article 5',
-                'content' => 'Content of article 5',
-                'image' => 'https://static.vecteezy.com/system/resources/thumbnails/012/176/986/small_2x/a-3d-rendering-image-of-grassed-hill-nature-scenery-png.png',
-            ],
-            [
-                'id' => 6,
-                'title' => 'Article 6',
-                'content' => 'Content of article 6',
-                'image' => 'https://static.vecteezy.com/system/resources/thumbnails/012/176/986/small_2x/a-3d-rendering-image-of-grassed-hill-nature-scenery-png.png',
 
-            ]
+        //dans ma variable articles, j'utilise le findAll pour récupéré tous les articles en BDD de ma table Article
+        $articles = $articleRepository->findAll();
 
-        ];
 
         //ici, la méthode render de la classe AbstractController instanciée en haut
         //me permet d'appeler ma vue twig et donc d'afficher mon html ainsi que mon tableau d'articles
@@ -66,12 +33,9 @@ class ArticleController extends AbstractController
         ]);
     }
 
-
-
     //je créé une route pour l'url en indiquant que lorsque je tape /article dans mon url,
     //c'est ma méthode si dessous qui s'affichera
     //l'écriture /{id} me permet de récupérer l'id directement aprèes le slash dans mon url
-
     #[Route('/article/{id}', 'article_show', ['id'=>'\d+'])]
     //je créé une nouvelle méthode articleShow afin de récupérer mes articles qui contient mon tableau d'articles
         //MAIS attention, je dois rentrer l'id en paramètre de ma fonction "articleShow"
@@ -80,70 +44,19 @@ class ArticleController extends AbstractController
         //le routeur acceptera toutes les urls qui ont la forme "/article/quelquechose",ou "/article/3", ou
         // "/article/46" ..
 
-    public function articleShow(int $id) : Response
+        //j'ajoute en paramètre la classe ArticleRepository qui est généré automatiquement quand j'ai inité
+        // mon entité Article via ma BDD
+        //cela me permet notamment de récupérer les les articles créé en BDD dans ma table article comme avec le
+        //SELECT *
+
+    public function articleShow(int $id, ArticleRepository $articleRepository) : Response
     {
 
-
-        $articles = [
-            [
-                'id' => 1,
-                'title' => 'Article 1',
-                'content' => 'Content of article 1',
-                'image' => 'https://static.vecteezy.com/system/resources/thumbnails/012/176/986/small_2x/a-3d-rendering-image-of-grassed-hill-nature-scenery-png.png',
-                'createdAt' => new \DateTime('2030-01-01 00:00:00')
-            ],
-            [
-                'id' => 2,
-                'title' => 'Article 2',
-                'content' => 'Content of article 2',
-                'image' => 'https://static.vecteezy.com/system/resources/thumbnails/012/176/986/small_2x/a-3d-rendering-image-of-grassed-hill-nature-scenery-png.png',
-                'createdAt' => new \DateTime('2030-01-01 00:00:00')
-            ],
-            [
-                'id' => 3,
-                'title' => 'Article 3',
-                'content' => 'Content of article 3',
-                'image' => 'https://static.vecteezy.com/system/resources/thumbnails/012/176/986/small_2x/a-3d-rendering-image-of-grassed-hill-nature-scenery-png.png',
-                'createdAt' => new \DateTime('2030-01-01 00:00:00')
-            ],
-            [
-                'id' => 4,
-                'title' => 'Article 4',
-                'content' => 'Content of article 4',
-                'image' => 'https://static.vecteezy.com/system/resources/thumbnails/012/176/986/small_2x/a-3d-rendering-image-of-grassed-hill-nature-scenery-png.png',
-                'createdAt' => new \DateTime('2030-01-01 00:00:00')
-            ],
-            [
-                'id' => 5,
-                'title' => 'Article 5',
-                'content' => 'Content of article 5',
-                'image' => 'https://static.vecteezy.com/system/resources/thumbnails/012/176/986/small_2x/a-3d-rendering-image-of-grassed-hill-nature-scenery-png.png',
-                'createdAt' => new \DateTime('2030-01-01 00:00:00')
-            ],
-            [
-            'id' => 6,
-            'title' => 'Article 6',
-            'content' => 'Content of article 6',
-            'image' => 'https://static.vecteezy.com/system/resources/thumbnails/012/176/986/small_2x/a-3d-rendering-image-of-grassed-hill-nature-scenery-png.png',
-            'createdAt' => new \DateTime('2030-01-01 00:00:00')
-        ]
-
-        ];
+        //dans ma variable articleFound, j'utilise le find($id) pour récupérer les articles par leur id dans ma table
+        //Article en BDD
+        $articleFound = $articleRepository->find($id);
 
 
-
-        //j'initie une variable articleFound et je la met a null
-        $articleFound = null;
-
-        //je boucle sur mon tableau d'articles pour récupéré chaque id
-        //si l'ID de mon article dans mon tableau correspond à l'id de mon url (récupéré avec $id plus haut)
-        foreach ($articles as $article) {
-            if ($article['id'] === (int)$id) {
-                //alors je remplace ma variable null par l'article entier correspondant a l'ID entré en URL
-                $articleFound = $article;
-            }
-
-        }
         //si la page n'a pas été trouvée, je renvoie sur la page not found
         if (!$articleFound) {
             return $this->redirectToRoute('not_found');

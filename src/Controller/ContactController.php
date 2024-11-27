@@ -54,8 +54,7 @@ class ContactController extends AbstractController
             //je dois récupérer également ces élément de mon controller pour qu'il soit possible de les appeler
             //dans mon twig
             'message' => $message,
-            'nom' => $nom,
-            'prenom' => $prenom
+
         ]);
     }
 }

@@ -14,7 +14,10 @@ class ContactController extends AbstractController
     //Je créé ma route, qui dit que lorsque j'écrirai /contact dans mon url, c'est mon controller ci dessous
     //qui sera appelé
     //Je créé la méthode contact qui permet d'afficher mon formulaire
-    #[Route('/contact', 'contact_form')]
+    //Pour sécuriser davatange mon site, j'indique la méthode dans ma route de mon url
+    //ainsi, cela dit que si l'url contact n'est pas GET et POST, alors celle ci ne fonctionnera pas
+    //c'est une sécurité supplémentaire
+    #[Route('/contact', 'contact_form', methods: ['GET','POST'])]
     //je passe la classe Request dans les paramètres de ma méthode et j'y ajoute aussi la variable $request = autowire
     public function contact(Request $request): Response
     {

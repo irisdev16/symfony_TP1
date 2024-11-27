@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block metatitle %}
+    Contact | Super Blog
+{% endblock metatitle %}
+
+{% block main %}
+
+    <h1>Formulaire de contact</h1>
+
+    {% if message %}
+
+        <h1>Message envoyé {{ nom }}</h1>
+
+    {% endif %}
+
+    <form method="POST" action="{{ path('contact_form') }}">
+
+        <label>Nom</label>
+        <input type="text" name="nom"/> <br> <br>
+
+        <label>Prénom</label>
+        <input type="text" name="prenom"/> <br> <br>
+
+        <label>Message</label>
+        <input type="text" name="message"/>
+
+        <input type="submit" value="Envoyer"/>
+
+    </form>
+
+{% endblock main %}

@@ -2,6 +2,7 @@
     box-sizing: border-box;
 }
 
+
 ul{
     display: flex;
     justify-content: space-around;
@@ -12,16 +13,16 @@ li{
     list-style: none;
     width: 10%;
     border-radius: 10px;
-    background-color: aquamarine;
+    background-color: coral;
     text-align: center;
-    color: darkblue;
+
     font-size: 30px;
 }
 
 a{
     text-decoration: none;
+    color: black;
 }
-
 
 .articles-container{
     display: flex;
@@ -34,13 +35,55 @@ a{
 .article {
     width: 33.33%;
     text-align: center;
-    background-color: lightblue;
+    background-color: mediumpurple;
     font-family: Baskerville, sans-serif;
-    border: 1px solid blue;
+    border: 1px solid purple;
 }
 
 footer{
     text-align: center;
-    margin-top: 20%;
+    margin-top: 35%;
     font-family: Baskerville, sans-serif;
+}
+
+#form {
+
+    text-align: right;
+    margin-right: 10%;
+    margin-top: 5%;
+
+}
+
+#inputText{
+    border-radius: 20px;
+
+}
+
+#titrePrincipal{
+    text-align: center;
+    font-size: 50px;
+    font-family: Baskerville, sans-serif;
+    color: coral;
+
+}
+
+#titreResultat{
+    text-align: center;
+    font-size: 50px;
+    font-family: Baskerville, sans-serif;
+    margin-top: 5%;
+
+
+}
+
+body{
+    background-image: url("https://png.pngtree.com/thumb_back/fh260/background/20210804/pngtree-modern-simple-elegant-beautiful-color-website-landing-page-background-image_757350.jpg");
+    background-size: cover;
+}
+
+#error{
+    color: red;
+    text-align: center;
+    margin-top: 10%;
+    font-size: 60px;
 }

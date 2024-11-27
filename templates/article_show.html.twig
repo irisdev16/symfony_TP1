@@ -1,18 +1,20 @@
-{% include 'partials/_header.html.twig' %}
+{% extends 'base.html.twig' %}
+
+{% block metatitle %}
+    {{ article.title }} | Super Blog
+{% endblock metatitle %}
 
 
-<main>
+{% block main %}
     <section class="articles-container">
+
         <article class="article">
-
-            <h1>{{ article.title }}</h1>
-            <p>{{ article.content }}</p>
-
-
+            <h2>{{ article.title }}</h2>
+            <p> {{ article.content }}</p>
+            <p> Date de création : {{ article.createdAt | date('d/m/y h:i:s') }}</p>
         </article>
+
     </section>
+{% endblock main %}
 
-</main>
 
-
-{% include 'partials/_footer.html.twig' %}

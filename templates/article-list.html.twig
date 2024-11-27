@@ -1,11 +1,11 @@
-{% include 'partials/_header.html.twig' %}
+{% extends 'base.html.twig' %}
 
+{% block metatitle %}
+    Liste d'articles | Super Blog
+{% endblock metatitle %}
 
-<body>
-
-<main>
-
-        <section class="articles-container">
+{% block main %}
+    <section class="articles-container">
 
 
                 {% for article in articles %}
@@ -24,12 +24,6 @@
 
 
         </section>
+{% endblock main %}
 
 
-
-</main>
-
-</body>
-
-
-{% include 'partials/_footer.html.twig' %}

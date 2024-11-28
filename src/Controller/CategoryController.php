@@ -101,4 +101,20 @@ class CategoryController extends AbstractController
             'category' => $categoryRemoved
         ]);
     }
+
+    #[Route('/category/update/{id}', name: 'category_update', requirements: ['id' => '\d+'])]
+    public function updateCategory(int $id, EntityManagerInterface $entityManager, CategoryRepository $categoryRepository): Response
+    {
+        $categoryUpdated = $categoryRepository->find($id);
+
+        $categoryUpdated->setTitle('POLITECHNIQUE++');
+
+        $entityManager->persist($categoryUpdated);
+        $entityManager->flush();
+
+        return $this->render('category_update.html.twig', [
+            'category' => $categoryUpdated
+        ]);
+
+    }
 }

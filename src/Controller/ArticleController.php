@@ -97,31 +97,30 @@ class ArticleController extends AbstractController
     // Doctrine, toutes mes propriété de mon entité Article sont récupéré automatiquement (titre, contenu, image, etc)
     //Article Repository récupère les infos en BDD pour les afficher dans mon navigateur alors que
     //Entity Manager envoie ce que je créé dans mon éditeur de code vers ma BDD
-    #[Route('/article/create', 'article_create')]
-    public function createArticle(EntityManagerInterface $entityManager): Response
+    #[Route('/article/create', name: 'article_create')]
+    public function createArticle(Request $request, EntityManagerInterface $entityManager): Response
     {
+        $article= null;
 
-        //dd('HELLO');
+        if ($request->isMethod('POST')) {
+            $article = new Article();
+            $article->setTitle($request->request->get('title'));
+            $article->setContent($request->request->get('content'));
+            $article->setImage($request->request->get('image'));
+            $article->setCreatedAt(new \DateTime());
 
-        //je créé une instance de l'entité Article
-        //grâce aux setter, j'établie en dur les propriété de mon article ajouté, normalement, il faudrai un
-        //formulaire grâce auquel je récupère les propriété de l'article créé par l'utilisateur
-        $article = new Article();
-        $article->setTitle('Article 18');
-        $article->setContent('Contenu de l"article 18');
-        $article->setImage('https://next-images.123rf.com/index/_next/image/?url=https://assets-cdn.123rf.com/index/static/assets/top-section-bg.jpeg&w=3840&q=75');
-        $article->setCreatedAt(new \DateTime());
 
-        //dd($article);
+            if (!empty($article->getTitle()) && !empty($article->getContent())) {
+                $entityManager->persist($article);
+                $entityManager->flush();
+            } else {
+                $this-> redirectToRoute('not_found');
+            }
+        }
 
-        //ici, j'appelle l'instance de classe $entityManager lié a la classe EntityManager
-        //le persist permet de faire une première sauvegarde de mon article créé (comme un commit avant un push)
-        // flush permet de créér un enregistrement d'article dans mon BDD dans ma table Article
-        $entityManager->persist($article);
-        $entityManager->flush();
-
-        //ma méthode attend une réponse, j'en met une juste pour pas créér d'erreur
-        return $this->redirectToRoute('article_list');
+        return $this->render('article_create.html.twig', [
+            'article' => $article,
+        ]);
     }
 
 

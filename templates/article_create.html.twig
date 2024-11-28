@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block metatitle %}
+    Article créé| Super Blog
+{% endblock metatitle %}
+
+{% block main %}
+
+    <h1>Création d'article</h1>
+
+    {% if article and article.title %}
+
+        <h1>{{ article.title }}</h1>
+        <p> {{ article.content }}</p>
+
+    {% endif %}
+
+
+
+    <form method="POST" action="{{ path('article_create') }}">
+
+        <label>Titre de l'article</label>
+        <input type="text" name="title"/> <br> <br>
+
+        <label>Contenu</label>
+        <input type="text" name="content"/> <br> <br>
+
+        <label>Image de l'article</label>
+        <input type="text" name="image"/> <br> <br>
+
+        <input type="submit"/>
+
+    </form>
+{% endblock main %}
+

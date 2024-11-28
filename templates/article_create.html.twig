@@ -12,6 +12,8 @@
 
         <h1>{{ article.title }}</h1>
         <p> {{ article.content }}</p>
+        <img src="{{ article.image }}">
+        <p> Date de création : {{ article.createdAt | date('d/m/y h:i:s') }}</p>
 
     {% endif %}
 

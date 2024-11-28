@@ -15,23 +15,23 @@ class CategoryController extends AbstractController
 {
     //je créé une route qui me permettra de récupérer dans l'url /category et ainsi cela appelera le controlleur ci dessous
     //je créé ma méthode category qui va me permettre d'afficher toutes mes catégories
-    //j'utilise CategoryRepository qui a été initié automatique quand j'ai créé mon entité Catégory
+    //j'utilise CategoryRepository qui a été instancié automatiquement quand j'ai créé mon entité Catégory
     //elle me permet de récupérer toutes les catégories créés en BDD
-    #[Route('/category', name: 'category')]
-    public function category(CategoryRepository $categoryRepository): Response
+    #[Route('/categories', name: 'categories_list')]
+    public function categories(CategoryRepository $categoryRepository): Response
     {
 
 
         //dans cette variable category, je récupère toutes les catégories en BDD de ma table Category
-        $category = $categoryRepository->findAll();
+        $categories = $categoryRepository->findAll();
 
-        return $this->render('category.html.twig', [
-            'category' => $category
+        return $this->render('categories_list.html.twig', [
+            'categories' => $categories
         ]);
     }
 
     //idem pour la route, sauf qu'ici je précise que je vais récupérer l'id directement après mon slash
-    #[Route('/category/{id}', name: 'category_show')]
+    #[Route('/category/{id}', name: 'category_show', requirements: ['id' => '\d+'])]
     public function categoryShow(int $id, CategoryRepository $categoryRepository): Response
     {
 

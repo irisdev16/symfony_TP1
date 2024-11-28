@@ -2,7 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Article;
 use App\Repository\ArticleRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -89,4 +92,34 @@ class ArticleController extends AbstractController
         ]);
     }
 
+    //je créé une méthode createArticle pour la création de mes articles
+    //j'utilise la classe EntityManagerInterface pour sauvegarder l'article créé dans ma BDD : grâce a celle ci et a
+    // Doctrine, toutes mes propriété de mon entité Article sont récupéré automatiquement (titre, contenu, image, etc)
+    //Article Repository récupère les infos en BDD pour les afficher dans on navigateur alors que
+    //Entity Manager envoie ce que je créé dans mon éditeur de code vers ma BDD
+    #[Route('/article/create', 'article_create')]
+    public function createArticle(EntityManagerInterface $entityManager): Response{
+
+        //dd('HELLO');
+
+        //je créé une instance de l'entité Article
+        //grâce aux setter, j'établie en dur les propriété de mon article ajouté, normalement, il faudrai un
+        //formulaire grâce auquel je récupère les propriété de l'article créé par l'utilisateur
+        $article = new Article();
+        $article->setTitle('Article 18');
+        $article->setContent('Contenu de l"article 18');
+        $article->setImage('https://next-images.123rf.com/index/_next/image/?url=https://assets-cdn.123rf.com/index/static/assets/top-section-bg.jpeg&w=3840&q=75');
+        $article->setCreatedAt(new \DateTime());
+
+        //dd($article);
+
+        //ici, j'appelle l'instance de classe $entityManager lié a la classe EntityManager
+        //le persist permet de faire une première sauvegarde de mon article créé (comme un commit avant un push)
+        // flush permet de créér un enregistrement d'article dans mon BDD dans ma table Article
+        $entityManager->persist($article);
+        $entityManager->flush();
+
+        //ma méthode attend une réponse, j'en met une juste pour pas créér d'erreur
+        return new Response('ARTICLE EN BDD');
+    }
 }

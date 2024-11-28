@@ -95,7 +95,7 @@ class ArticleController extends AbstractController
     //je créé une méthode createArticle pour la création de mes articles
     //j'utilise la classe EntityManagerInterface pour sauvegarder l'article créé dans ma BDD : grâce a celle ci et a
     // Doctrine, toutes mes propriété de mon entité Article sont récupéré automatiquement (titre, contenu, image, etc)
-    //Article Repository récupère les infos en BDD pour les afficher dans on navigateur alors que
+    //Article Repository récupère les infos en BDD pour les afficher dans mon navigateur alors que
     //Entity Manager envoie ce que je créé dans mon éditeur de code vers ma BDD
     #[Route('/article/create', 'article_create')]
     public function createArticle(EntityManagerInterface $entityManager): Response{

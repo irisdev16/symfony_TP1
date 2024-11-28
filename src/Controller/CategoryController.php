@@ -6,7 +6,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
 use App\Repository\CategoryRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -51,9 +53,32 @@ class CategoryController extends AbstractController
             'category' => $categoryFound
         ]);
 
+    }
 
+    //je créé une méthode createCategory pour la création de catégories
+    //j'utilise la classe EntityManagerInterface qui me permet de sauvegarder la catégorie créée en BDD
+    //les propriété de mon entité Category sont automatiquement récupérée grâce a cette classe et a Doctrine
+    #[Route('/categories/create', name: 'category_create')]
+    public function createCategory(EntityManagerInterface $entityManager): Response{
 
+        //dd('HELLO');
 
+        //je créé une instance de l'entité Category
+        //grâce aux setters, je défini des propriétés a la catégorie créée ici en dur
+        $category = new Category();
+        $category->setTitle('Animaux Fantastiques');
+        $category->setColor('Violet');
+
+        //dd($category);
+
+        //le persist fait une pré-sauvegarde de ma catégorie créé ici
+        $entityManager->persist($category);
+        //le flush exécute bien la création de ma catégorie en BDD, je le vois donc s'afficher sur ma BDD (c'est
+        // comme un push vers ma bdd)
+        $entityManager->flush();
+
+        //je dois ici faire un return sinon j'aurai un message d'erreur
+        return new Response('CATEGORIE CRÉÉE');
 
     }
 

@@ -78,7 +78,9 @@ class CategoryController extends AbstractController
         $entityManager->flush();
 
         //je dois ici faire un return sinon j'aurai un message d'erreur
-        return new Response('CATEGORIE CRÉÉE');
+        //meme si j'ai un message d'erreur, cela me créé quand meme ma catégorie en BDD puisque le code s'exécute
+        // jusqu'à la ligne d'avant, donc la catégorie se créée
+        return $this->redirectToRoute('categories_list');
 
     }
 

@@ -98,7 +98,8 @@ class ArticleController extends AbstractController
     //Article Repository récupère les infos en BDD pour les afficher dans mon navigateur alors que
     //Entity Manager envoie ce que je créé dans mon éditeur de code vers ma BDD
     #[Route('/article/create', 'article_create')]
-    public function createArticle(EntityManagerInterface $entityManager): Response{
+    public function createArticle(EntityManagerInterface $entityManager): Response
+    {
 
         //dd('HELLO');
 
@@ -120,6 +121,32 @@ class ArticleController extends AbstractController
         $entityManager->flush();
 
         //ma méthode attend une réponse, j'en met une juste pour pas créér d'erreur
-        return new Response('ARTICLE EN BDD');
+        return $this->redirectToRoute('article_list');
+    }
+
+
+    #[Route('article/delete/{id}', 'article_delete', ['id'=>'\d+'] )]
+    public function removeArticle (int $id, EntityManagerInterface $entityManager, ArticleRepository $articleRepository) : Response
+    {
+        //dd('hello');
+
+        //je récupère grâce au repository une instance de ma classe Article en BDD$
+        $articleRemoved = $articleRepository->find($id);
+
+        //si mon article a déjà été suprrimé ou n'existe pas, alors je renvoie sur la page d'erreur 'not-found'
+        if (!$articleRemoved) {
+            return $this->redirectToRoute('not_found');
+        }
+
+        //j'appelle l'instance de la classe $EntityManager, lié a la classe EntituManager passés tous les deux en
+        // paramètre de ma méthode
+        //j'utilise le remove pour supprimer un article par son id (comme instancié précédemment)
+        $entityManager->remove($articleRemoved);
+        $entityManager->flush();
+
+
+        return $this->redirectToRoute('article_list');
+
+
     }
 }

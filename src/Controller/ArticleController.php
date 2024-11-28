@@ -145,8 +145,36 @@ class ArticleController extends AbstractController
         $entityManager->flush();
 
 
-        return $this->redirectToRoute('article_list');
+        return $this->render('article_delete.html.twig', [
+            'article' => $articleRemoved
+        ]);
+    }
 
+
+    //je créé une méthode qui me permet de modifier mes articles
+    //j'utilise le repository pour récupérer par l'id grace à doctrine les articles dans mon url
+    //ainsi je cible quel article je souhaite modifier
+    // grace aux setter présent dans mon entité Article, je récupère ici le titre et le contenu de l'article
+    // selectionné avec l'id passé en url et je lui modifie son titre et son contenu
+    //j'utilise ensuite une instance ($entityManager) de la classe EntityManager pour faire une pré sauvegarde en BDD
+    // et executer les changement en BDD (persist et flush)
+    //je retourne un résultat vers ma vue Twig.
+    #[Route('article/update/{id}', 'article_update', ['id'=>'\d+'] )]
+    public function updateArticle(int $id, ArticleRepository $articleRepository, EntityManagerInterface
+    $entityManager) : Response
+    {
+        $articleUpdated = $articleRepository->find($id);
+
+
+        $articleUpdated->setTitle('Article blabl');
+        $articleUpdated->setContent('Contenu blalba');
+
+        $entityManager->persist($articleUpdated);
+        $entityManager->flush();
+
+        return $this->render('article_update.html.twig', [
+            'article' => $articleUpdated
+        ]);
 
     }
 }

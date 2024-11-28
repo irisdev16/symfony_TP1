@@ -17,7 +17,11 @@
                             - et on veut récupéré l'id présent dans l'url et l'associer à l'article correspondant
                             - "afficher l'article" est le texte présent en html sur lequel cliquer
                             #}
-                            <a href="{{ path('article_show', {id:article.id}) }}">Afficher l'article</a>
+                            <ul>
+                                <li><a href="{{ path('article_show', {id:article.id}) }}">Afficher l'article</a></li>
+                                <li><a href="{{ path('article_delete', {id:article.id}) }}">Supprimer l'article</a></li>
+                            </ul>
+
                         </article>
                 {% endfor %}
 

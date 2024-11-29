@@ -94,27 +94,39 @@ class ArticleController extends AbstractController
     }
 
     //je créé une méthode createArticle pour la création de mes articles
+    //je créé un instance de classe de mon entité Article puisque je suis dans la création d'article et que je
+    // veux pouvoir créer un nouvel article
+    //je génère un formulaire grace au Gabarit ArticleType
+    //j'utilise la méthode createForm issu de la classe héritéé AbstractController
+    //j'utilise la méthode handleRequest en lui passant en paramètre $requeset : ça récupère la requête HTTP (POST ou
+    // GET ou whatever)
+    //condition : si le formulaire est bien soumis, alors je renseigne la date en BDD (la création de la date en BDD
+    // se fera au submit, au moment d'envoyer les données en BDD) et
+    // je pré-sauvegarde et j'exécute la création de l'article en BDD
+    //je créé une vue pour ce formulaire afin que celle ci soit lu dans mon fichier twig
     #[Route('/article/create', name: 'article_create')]
     public function createArticle(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $message= "Veuillez remplir les champs";
 
-        //je créé un instance de classe de mon entité Article puisque je suis dans la création d'article et que je
-        // veux pouvoir créer un nouvel article
         $article = new Article();
-        //je génère ici un formulaire grace au Gabarit ArticleType
-        //j'utilise ici la méthode createForm issu de la classe héritéé AbstractController
+
         $form = $this->createForm(ArticleType::class, $article);
 
-        //je créé une vue pour ce formulaire afin que celle ci soit lu dans mon fichier twig
+        $form->handleRequest($request);
+        if($form->isSubmitted()){
+            $article->setCreatedAt(new \DateTime());
+            $entityManager->persist($article);
+            $entityManager->flush();
+        }
+
+
         $formView = $form->createView();
 
 
         //j'utilise la méthode render pour retourner une vue twig dans laquelle je lui passe en paramètre ce que je
         // veux récupérer de cette méthode, soit le message et la vue du formulaire formView
         return $this->render('article_create.html.twig', [
-            'message' => $message,
-            'formView' => $formView,
+            'formView' => $formView
         ]);
     }
 

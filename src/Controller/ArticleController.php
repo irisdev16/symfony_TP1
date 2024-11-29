@@ -94,14 +94,6 @@ class ArticleController extends AbstractController
     }
 
     //je créé une méthode createArticle pour la création de mes articles
-    // j'utiliser la classe EntityManager et son instance de classe pour pré-sauvegarder et executer l'article créé
-    // dans ma BDD
-    //j'initie ma variable article a null
-    //je récupère les données en POST de mon formulaire
-    //si la requête est bien une requete post, alors je créé un nouvel article avec le titre, le contenu et l'image
-    // passé dans les champs du formulaire par l'utilisateur
-    //condition : si le formulaire est vide, je renvoie vers ma page d'erreur
-    // je renvoie grâce a ma méthode render vers mon fichier twig qui renvoie du html sur mon navigateur
     #[Route('/article/create', name: 'article_create')]
     public function createArticle(Request $request, EntityManagerInterface $entityManager): Response
     {

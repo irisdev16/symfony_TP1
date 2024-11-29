@@ -171,6 +171,7 @@ class ArticleController extends AbstractController
     //si la valeur de mes champs est modifié via le formulaire, alors je récupère la valeur modifiée (via SetTitle,
     // Set Content et SetImage)
     //si les champs ne sont pas remplis, s'ils sont vide, j'envoie mon message d'erreur
+    //je met a jour l'article en BDD grâce a l'instance de classe $entityManager
     // je retourne ma méthode render avec ma vue twig qui renvoie du HTML, je lui passe en tableau les valeur article
     // et message car j'en aurai besoin dans mon document twig
     #[Route('article/update/{id}', 'article_update', ['id'=>'\d+'] )]
@@ -202,6 +203,9 @@ class ArticleController extends AbstractController
             } else {
                 $message = "Attention, vous n'avez pas rempli tous les champs";
             }
+
+            $entityManager->persist($articleUpdated);
+            $entityManager->flush();
 
         }
 

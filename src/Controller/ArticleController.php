@@ -96,7 +96,7 @@ class ArticleController extends AbstractController
     //je créé une méthode createArticle pour la création de mes articles
     //je créé un instance de classe de mon entité Article puisque je suis dans la création d'article et que je
     // veux pouvoir créer un nouvel article
-    //je génère un formulaire grace au Gabarit ArticleType
+    //je génère un formulaire grace au Gabarit ArticleType dans mon terminal
     //j'utilise la méthode createForm issu de la classe héritéé AbstractController
     //j'utilise la méthode handleRequest en lui passant en paramètre $requeset : ça récupère la requête HTTP (POST ou
     // GET ou whatever)
@@ -160,15 +160,13 @@ class ArticleController extends AbstractController
     //je créé une méthode qui me permet de modifier mes articles
     //j'utilise le repository pour récupérer par l'id grace à doctrine les articles dans mon url
     //ainsi je cible quel article je souhaite modifier
-    //je créé ma variable message pour récupérer un message avant et au submit de mon formulaire
-    //si ma requête est bien une reqête POST, je récupère la valeur des champs de mes articles (présente en BDD)
-    //si mon article n'est pas modifié, je garde les champs déjà présents en BDD
-    //si la valeur de mes champs est modifié via le formulaire, alors je récupère la valeur modifiée (via SetTitle,
-    // Set Content et SetImage)
-    //si les champs ne sont pas remplis, s'ils sont vide, j'envoie mon message d'erreur
-    //je met a jour l'article en BDD grâce a l'instance de classe $entityManager
-    // je retourne ma méthode render avec ma vue twig qui renvoie du HTML, je lui passe en tableau les valeur article
-    // et message car j'en aurai besoin dans mon document twig
+    // j'utilise la méthode createForm pour récupérer un formulaire créér dans mon terminal grâce a AbstractController
+    //je lui passe en paramètre le gabarit (mon ArticleType) et mon artcile updated.
+    //j'utilise la méthide handleRequest pour récupérer la requête HTTP (POST ici) de mon formulaire
+    //condition : si le formulaire est bien soumis, alors je renseigne la date en BDD (la création de la date en BDD
+    // se fera au submit, au moment d'envoyer les données en BDD) et
+    // je pré-sauvegarde et j'exécute la création de l'article en BDD
+    //je créé une vue pour ce formulaire afin que celle ci soit lu dans mon fichier twig
     #[Route('article/update/{id}', 'article_update', ['id'=>'\d+'] )]
     public function updateArticle(int $id, ArticleRepository $articleRepository, EntityManagerInterface
     $entityManager, Request $request) : Response
@@ -176,35 +174,21 @@ class ArticleController extends AbstractController
 
         $articleUpdated = $articleRepository->find($id);
 
-        $message= "Veuillez remplir les champs";
+        $form = $this->createForm(ArticleType::class, $articleUpdated);
 
-        if ($request->isMethod('POST')) {
-            //ici je créé des variable pour récupérer les données, c'est plus lisible dans mon code
-            $title = $request->request->get('title');
-            $content = $request->request->get('content');
-            $image = $request->request->get('image');
-
-
-            $articleUpdated->setTitle($title);
-            $articleUpdated->setContent($content);
-            $articleUpdated->setImage($image);
-
-
-
-            if (!empty($articleUpdated->getTitle()) && !empty($articleUpdated->getContent())) {
-                $entityManager->persist($articleUpdated);
-                $entityManager->flush();
-                $message = "Article bien mis à jour";
-            } else {
-                $message = "Attention, vous n'avez pas rempli tous les champs";
-            }
-
-
+        $form->handleRequest($request);
+        if($form->isSubmitted()){
+            $articleUpdated->setCreatedAt(new \DateTime());
+            $entityManager->persist($articleUpdated);
+            $entityManager->flush();
         }
 
+
+        $formView = $form->createView();
+
+
         return $this->render('article_update.html.twig', [
-            'article' => $articleUpdated,
-            'message' => $message
+            'formView' => $formView,
         ]);
 
     }

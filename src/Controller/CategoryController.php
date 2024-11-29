@@ -115,27 +115,46 @@ class CategoryController extends AbstractController
         ]);
     }
 
-    //je créé une méthode update pour modifier ma catégorie
-    //je créé en amont la route pour mon URL en précisant que cela doit être un INTEGER
-    //je passe en paramètre de ma fonction l'id, la classe EntityManager et son instance de classe, la classe CategoryRepository et son instance de classe
-    // j'utilise le Repository pour aller récupérer les catégory par leur id notamment grâce a doctrine
-    //grâce aux setter présent dans mon entité Category, je modifie le titre de ma catégorie
-    //avec la classe EntityManager, j'utilise l'instance de classe $entityManager pour  pré-sauvegarder les modifications apportées
-    //en BDD et executer ces modifications dans ma BDD.
-    //je retourne grace a la méthode render un résultat qui me mène sur une vue Twig qui renvoie du hmtl
+    //je créé une méthode qui me permet de modifier mes categories
+    //j'utilise le repository pour récupérer par l'id grace à doctrine les catégories dans mon url
+    //ainsi je cible quelle categorie je souhaite modifier
+    //je créé ma variable message pour récupérer un message avant et au submit de mon formulaire
+    //si ma requête est bien une requête POST, je récupère la valeur des champs de ma categorie (présente en BDD)
+    //si ma catégorie n'est pas modifié, je garde les champs déjà présents en BDD
+    //si la valeur de mes champs est modifié via le formulaire, alors je récupère la valeur modifiée (via SetTitle,
+    // SetColor)
+    //si les champs ne sont pas remplis, s'ils sont vide, j'envoie mon message d'erreur
+    //je met a jour la catégorie en BDD grâce avec l'instance de classe $entityManager
+    // je retourne ma méthode render avec ma vue twig qui renvoie du HTML, je lui passe en tableau les valeur article
+    // et message car j'en aurai besoin dans mon document twig
 
     #[Route('/category/update/{id}', name: 'category_update', requirements: ['id' => '\d+'])]
-    public function updateCategory(int $id, EntityManagerInterface $entityManager, CategoryRepository $categoryRepository): Response
+    public function updateCategory(int $id, EntityManagerInterface $entityManager, CategoryRepository $categoryRepository, Request $request): Response
     {
         $categoryUpdated = $categoryRepository->find($id);
 
-        $categoryUpdated->setTitle('POLITECHNIQUE++');
+        $message = "Veuillez remplir les champs";
 
-        $entityManager->persist($categoryUpdated);
-        $entityManager->flush();
+        if ($request->isMethod('POST')) {
+
+            $title = $request->request->get('title');
+            $color = $request->request->get('color');
+
+
+            $categoryUpdated->setTitle($title);
+            $categoryUpdated->setColor($color);
+
+            if(!empty($categoryUpdated->getTitle())){
+                $entityManager->persist($categoryUpdated);
+                $entityManager->flush();
+                $message = "Catégorie bien modifiée";
+            } else
+                $message = "Attention, vous n'avez pas rempli tous les champs";
+        }
 
         return $this->render('category_update.html.twig', [
-            'category' => $categoryUpdated
+            'category' => $categoryUpdated,
+            'message' => $message
         ]);
 
     }

@@ -168,6 +168,7 @@ class ArticleController extends AbstractController
     //ainsi je cible quel article je souhaite modifier
     //je créé ma variable message pour récupérer un message avant et au submit de mon formulaire
     //si ma requête est bien une reqête POST, je récupère la valeur des champs de mes articles (présente en BDD)
+    //si mon article n'est pas modifié, je garde les champs déjà présents en BDD
     //si la valeur de mes champs est modifié via le formulaire, alors je récupère la valeur modifiée (via SetTitle,
     // Set Content et SetImage)
     //si les champs ne sont pas remplis, s'ils sont vide, j'envoie mon message d'erreur
@@ -204,8 +205,6 @@ class ArticleController extends AbstractController
                 $message = "Attention, vous n'avez pas rempli tous les champs";
             }
 
-            $entityManager->persist($articleUpdated);
-            $entityManager->flush();
 
         }
 

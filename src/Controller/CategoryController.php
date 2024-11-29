@@ -10,6 +10,7 @@ use App\Entity\Category;
 use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -55,32 +56,39 @@ class CategoryController extends AbstractController
 
     }
 
-    //je créé une méthode createCategory pour la création de catégories
-    //j'utilise la classe EntityManagerInterface qui me permet de sauvegarder la catégorie créée en BDD
-    //les propriété de mon entité Category sont automatiquement récupérée grâce a cette classe et a Doctrine
+    //je créé une méthode createCategory pour la création de mes catégories
+    // j'utiliser la classe EntityManager et son instance de classe pour pré-sauvegarder et executer la catégorie créé
+    // dans ma BDD
+    //j'initie ma variable catégory a null
+    //je récupère les données en POST de mon formulaire
+    //si la requête est bien une requete post, alors je créé une nouvel categorie avec le titre
+    // passé dans les champs du formulaire par l'utilisateur
+    //condition : si le formulaire est vide, je renvoie vers ma page d'erreur
+    // je renvoie grâce a ma méthode render vers mon fichier twig qui renvoie du html sur mon naviageur
     #[Route('/categories/create', name: 'category_create')]
-    public function createCategory(EntityManagerInterface $entityManager): Response{
+    public function createCategory(Request $request,EntityManagerInterface $entityManager): Response
+    {
 
         //dd('HELLO');
 
-        //je créé une instance de l'entité Category
-        //grâce aux setters, je défini des propriétés a la catégorie créée ici en dur
-        $category = new Category();
-        $category->setTitle('Animaux Fantastiques');
-        $category->setColor('Violet');
+        $category = null;
 
-        //dd($category);
+        if ($request->isMethod('POST')) {
+            $category = new Category();
+            $category->setTitle($request->request->get('title'));
+            $category->setColor($request->request->get('title'));
 
-        //le persist fait une pré-sauvegarde de ma catégorie créé ici
-        $entityManager->persist($category);
-        //le flush exécute bien la création de ma catégorie en BDD, je le vois donc s'afficher sur ma BDD (c'est
-        // comme un push vers ma bdd)
-        $entityManager->flush();
+            if(!empty($category->getTitle())){
+                $entityManager->persist($category);
+                $entityManager->flush();
+            } else
+                return $this->redirectToRoute('empty_fields');
+        }
 
-        //je dois ici faire un return sinon j'aurai un message d'erreur
-        //meme si j'ai un message d'erreur, cela me créé quand meme ma catégorie en BDD puisque le code s'exécute
-        // jusqu'à la ligne d'avant, donc la catégorie se créée
-        return $this->redirectToRoute('categories_list');
+
+        return $this->render('category_create.html.twig', [
+            'category' => $category
+        ]);
 
     }
 

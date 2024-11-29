@@ -17,4 +17,12 @@ class ErrorController extends AbstractController
         return new Response($view, 404);
 
     }
+
+    #[Route('/empty', 'empty_fields')]
+    public function emptyFields(): Response
+    {
+        $view = $this->renderView('emptyFields.html.twig');
+
+        return new Response($view);
+    }
 }

@@ -118,7 +118,7 @@ class ArticleController extends AbstractController
                 $entityManager->persist($article);
                 $entityManager->flush();
             } else {
-                $this-> redirectToRoute('not_found');
+                return $this-> redirectToRoute('empty_fields');
             }
         }
 

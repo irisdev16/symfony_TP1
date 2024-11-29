@@ -1,21 +1,14 @@
 {% extends 'base.html.twig' %}
 
 {% block metatitle %}
-    Article créé| Super Blog
+    Création d'un article | Super Blog
 {% endblock metatitle %}
 
 {% block main %}
 
-    <h1>Création d'article</h1>
 
-    {% if article and article.title %}
+    <p>{{ message }}</p>
 
-        <h1>{{ article.title }}</h1>
-        <p> {{ article.content }}</p>
-        <img src="{{ article.image }}">
-        <p> Date de création : {{ article.createdAt | date('d/m/y h:i:s') }}</p>
-
-    {% endif %}
 
 
 
@@ -25,7 +18,7 @@
         <input type="text" name="title" /> <br> <br>
 
         <label>Contenu</label>
-        <input type="text" name="content" /> <br> <br>
+        <textarea type="text" name="content"></textarea> <br> <br>
 
         <label>Image de l'article</label>
         <input type="text" name="image" /> <br> <br>

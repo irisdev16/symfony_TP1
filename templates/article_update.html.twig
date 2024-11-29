@@ -6,8 +6,23 @@
 
 {% block main %}
 
-    <h1>"{{ article.title}}" mis a jour</h1>
 
+    <p>{{ message }}</p>
+
+
+
+    <form method="POST" action="{{ path('article_update', {id: article.id}) }}">
+
+        <label>Titre de l'article</label>
+        <input type="text" name="title" value="{{ article.title }}" /> <br> <br>
+
+        <label>Contenu</label>
+        <textarea type="text" name="content">{{ article.content }}</textarea> <br> <br>
+
+        <label>Image de l'article</label>
+        <input type="text" name="image" value="{{ article.image }}" /> <br> <br>
+
+        <input type="submit"/>
+
+    </form>
 {% endblock main %}
-
-

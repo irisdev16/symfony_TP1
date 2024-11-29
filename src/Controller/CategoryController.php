@@ -64,30 +64,35 @@ class CategoryController extends AbstractController
     //si la requête est bien une requete post, alors je créé une nouvel categorie avec le titre
     // passé dans les champs du formulaire par l'utilisateur
     //condition : si le formulaire est vide, je renvoie vers ma page d'erreur
-    // je renvoie grâce a ma méthode render vers mon fichier twig qui renvoie du html sur mon naviageur
+    // je renvoie grâce a ma méthode render vers mon fichier twig qui renvoie du html sur mon navgateur
     #[Route('/categories/create', name: 'category_create')]
     public function createCategory(Request $request,EntityManagerInterface $entityManager): Response
     {
 
         //dd('HELLO');
 
-        $category = null;
+        $message= "Veuillez remplir les champs";
 
         if ($request->isMethod('POST')) {
+
+            $title = $request->request->get('title');
+            $color = $request->request->get('color');
+
             $category = new Category();
-            $category->setTitle($request->request->get('title'));
-            $category->setColor($request->request->get('title'));
+            $category->setTitle($title);
+            $category->setColor($color);
 
             if(!empty($category->getTitle())){
                 $entityManager->persist($category);
                 $entityManager->flush();
+                $message = "Catégorie bien créée";
             } else
-                return $this->redirectToRoute('empty_fields');
+                $message = "Attention, vous n'avez pas rempli tous les champs";
         }
 
 
         return $this->render('category_create.html.twig', [
-            'category' => $category
+            'message' => $message
         ]);
 
     }

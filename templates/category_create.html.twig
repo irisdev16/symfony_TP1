@@ -6,14 +6,7 @@
 
 {% block main %}
 
-    <h1>Création de catégorie</h1>
-
-    {% if category and category.title %}
-
-        <h1>{{ category.title }}</h1>
-
-
-    {% endif %}
+    <p>{{ message }}</p>
 
 
     <form method="POST" action="{{ path('category_create') }}">
@@ -22,7 +15,7 @@
         <input type="text" name="title"/> <br> <br>
 
         <label>Couleur de la categorie</label>
-        <input type="text" name="color"/> <br> <br>
+        <input type="color" name="color"/> <br> <br>
 
         <input type="submit"/>
 

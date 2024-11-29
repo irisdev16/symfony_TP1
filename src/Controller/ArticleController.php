@@ -100,30 +100,39 @@ class ArticleController extends AbstractController
     //si la requête est bien une requete post, alors je créé un nouvel article avec le titre, le contenu et l'image
     // passé dans les champs du formulaire par l'utilisateur
     //condition : si le formulaire est vide, je renvoie vers ma page d'erreur
-    // je renvoie grâce a ma méthode render vers mon fichier twig qui renvoie du html sur mon naviageur
+    // je renvoie grâce a ma méthode render vers mon fichier twig qui renvoie du html sur mon navigateur
     #[Route('/article/create', name: 'article_create')]
     public function createArticle(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $article= null;
+
+        $message= "Veuillez remplir les champs";
 
         if ($request->isMethod('POST')) {
+            //ici je créé des variable pour récupérer les données, c'est plus lisible dans mon code
+            $title = $request->request->get('title');
+            $content = $request->request->get('content');
+            $image = $request->request->get('image');
+
+
             $article = new Article();
-            $article->setTitle($request->request->get('title'));
-            $article->setContent($request->request->get('content'));
-            $article->setImage($request->request->get('image'));
+            $article->setTitle($title);
+            $article->setContent($content);
+            $article->setImage($image);
             $article->setCreatedAt(new \DateTime());
 
 
             if (!empty($article->getTitle()) && !empty($article->getContent())) {
                 $entityManager->persist($article);
                 $entityManager->flush();
+                $message = "Article bien créé";
             } else {
-                return $this-> redirectToRoute('empty_fields');
+                $message = "Attention, vous n'avez pas rempli tous les champs";
             }
+
         }
 
         return $this->render('article_create.html.twig', [
-            'article' => $article,
+            'message' => $message
         ]);
     }
 
@@ -157,27 +166,51 @@ class ArticleController extends AbstractController
     //je créé une méthode qui me permet de modifier mes articles
     //j'utilise le repository pour récupérer par l'id grace à doctrine les articles dans mon url
     //ainsi je cible quel article je souhaite modifier
-    // grace aux setter présent dans mon entité Article, je récupère ici le titre et le contenu de l'article
-    // selectionné avec l'id passé en url et je lui modifie son titre et son contenu
-    //j'utilise ensuite une instance ($entityManager) de la classe EntityManager pour faire une pré sauvegarde en BDD
-    // et executer les changement en BDD (persist et flush)
-    //je retourne un résultat vers ma vue Twig.
+    //je créé ma variable message pour récupérer un message avant et au submit de mon formulaire
+    //si ma requête est bien une reqête POST, je récupère la valeur des champs de mes articles (présente en BDD)
+    //si la valeur de mes champs est modifié via le formulaire, alors je récupère la valeur modifiée (via SetTitle,
+    // Set Content et SetImage)
+    //si les champs ne sont pas remplis, s'ils sont vide, j'envoie mon message d'erreur
+    // je retourne ma méthode render avec ma vue twig qui renvoie du HTML, je lui passe en tableau les valeur article
+    // et message car j'en aurai besoin dans mon document twig
     #[Route('article/update/{id}', 'article_update', ['id'=>'\d+'] )]
     public function updateArticle(int $id, ArticleRepository $articleRepository, EntityManagerInterface
-    $entityManager) : Response
+    $entityManager, Request $request) : Response
     {
+
         $articleUpdated = $articleRepository->find($id);
 
+        $message= "Veuillez remplir les champs";
 
-        $articleUpdated->setTitle('Article blabl');
-        $articleUpdated->setContent('Contenu blalba');
+        if ($request->isMethod('POST')) {
+            //ici je créé des variable pour récupérer les données, c'est plus lisible dans mon code
+            $title = $request->request->get('title');
+            $content = $request->request->get('content');
+            $image = $request->request->get('image');
 
-        $entityManager->persist($articleUpdated);
-        $entityManager->flush();
+
+            $articleUpdated->setTitle($title);
+            $articleUpdated->setContent($content);
+            $articleUpdated->setImage($image);
+
+
+
+            if (!empty($articleUpdated->getTitle()) && !empty($articleUpdated->getContent())) {
+                $entityManager->persist($articleUpdated);
+                $entityManager->flush();
+                $message = "Article bien mis à jour";
+            } else {
+                $message = "Attention, vous n'avez pas rempli tous les champs";
+            }
+
+        }
 
         return $this->render('article_update.html.twig', [
-            'article' => $articleUpdated
+            'article' => $articleUpdated,
+            'message' => $message
         ]);
 
     }
+
+
 }

@@ -6,18 +6,6 @@
 
 {% block main %}
 
-    <p>{{ message }}</p>
+    {{ form(formView) }}
 
-
-    <form method="POST" action="{{ path('category_create') }}">
-
-        <label>Titre de la categorie</label>
-        <input type="text" name="title"/> <br> <br>
-
-        <label>Couleur de la categorie</label>
-        <input type="color" name="color"/> <br> <br>
-
-        <input type="submit"/>
-
-    </form>
 {% endblock main %}

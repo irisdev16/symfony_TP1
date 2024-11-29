@@ -7,6 +7,7 @@
 namespace App\Controller;
 
 use App\Entity\Category;
+use App\Form\CategoryType;
 use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -56,43 +57,34 @@ class CategoryController extends AbstractController
 
     }
 
-    //je créé une méthode createCategory pour la création de mes catégories
-    // j'utiliser la classe EntityManager et son instance de classe pour pré-sauvegarder et executer la catégorie créé
-    // dans ma BDD
-    //j'initie ma variable catégory a null
-    //je récupère les données en POST de mon formulaire
-    //si la requête est bien une requete post, alors je créé une nouvel categorie avec le titre
-    // passé dans les champs du formulaire par l'utilisateur
-    //condition : si le formulaire est vide, je renvoie vers ma page d'erreur
-    // je renvoie grâce a ma méthode render vers mon fichier twig qui renvoie du html sur mon navgateur
+    //je créé une méthode createCategory pour la création de mes categories
+    //je créé un instance de classe de mon entité Category puisque je suis dans la création de catégories et que je
+    // veux pouvoir créer une nouvelle catégorie
+    //je génère un formulaire grace au Gabarit CategoryType dans mon terminal (avec make:form)
+    //j'utilise la méthode createForm issu de la classe héritéé AbstractController
+    //j'utilise la méthode handleRequest en lui passant en paramètre $request : ça récupère la requête HTTP (POST ou
+    // GET ou whatever)
+    //condition : si le formulaire est bien soumis, je pré-sauvegarde et j'exécute la création de l'article en BDD
+    //je créé une vue pour ce formulaire afin que celle ci soit lu dans mon fichier twig
     #[Route('/categories/create', name: 'category_create')]
     public function createCategory(Request $request,EntityManagerInterface $entityManager): Response
     {
 
-        //dd('HELLO');
+        $category = new Category();
 
-        $message= "Veuillez remplir les champs";
+        $form = $this->createForm(CategoryType::class, $category);
 
-        if ($request->isMethod('POST')) {
-
-            $title = $request->request->get('title');
-            $color = $request->request->get('color');
-
-            $category = new Category();
-            $category->setTitle($title);
-            $category->setColor($color);
-
-            if(!empty($category->getTitle())){
-                $entityManager->persist($category);
-                $entityManager->flush();
-                $message = "Catégorie bien créée";
-            } else
-                $message = "Attention, vous n'avez pas rempli tous les champs";
+        $form->handleRequest($request);
+        if($form->isSubmitted()){
+            $entityManager->persist($category);
+            $entityManager->flush();
         }
+
+       $formView = $form->createView();
 
 
         return $this->render('category_create.html.twig', [
-            'message' => $message
+            'formView' => $formView,
         ]);
 
     }
@@ -115,46 +107,32 @@ class CategoryController extends AbstractController
         ]);
     }
 
-    //je créé une méthode qui me permet de modifier mes categories
+    //je créé une méthode qui me permet de modifier mes catégories
     //j'utilise le repository pour récupérer par l'id grace à doctrine les catégories dans mon url
-    //ainsi je cible quelle categorie je souhaite modifier
-    //je créé ma variable message pour récupérer un message avant et au submit de mon formulaire
-    //si ma requête est bien une requête POST, je récupère la valeur des champs de ma categorie (présente en BDD)
-    //si ma catégorie n'est pas modifié, je garde les champs déjà présents en BDD
-    //si la valeur de mes champs est modifié via le formulaire, alors je récupère la valeur modifiée (via SetTitle,
-    // SetColor)
-    //si les champs ne sont pas remplis, s'ils sont vide, j'envoie mon message d'erreur
-    //je met a jour la catégorie en BDD grâce avec l'instance de classe $entityManager
-    // je retourne ma méthode render avec ma vue twig qui renvoie du HTML, je lui passe en tableau les valeur article
-    // et message car j'en aurai besoin dans mon document twig
+    //ainsi je cible quelle catégorie je souhaite modifier
+    // j'utilise la méthode createForm pour récupérer un formulaire créér dans mon terminal grâce a AbstractController
+    //je lui passe en paramètre le gabarit (mon CategoryType) et mon categoryUpdated.
+    //j'utilise la méthode handleRequest pour récupérer la requête HTTP (POST ici) de mon formulaire
+    //condition : si le formulaire est bien soumis, je pré-sauvegarde et j'exécute la création de la catégorie en BDD
+    //je créé une vue pour ce formulaire afin que celle ci soit lu dans mon fichier twig
 
     #[Route('/category/update/{id}', name: 'category_update', requirements: ['id' => '\d+'])]
     public function updateCategory(int $id, EntityManagerInterface $entityManager, CategoryRepository $categoryRepository, Request $request): Response
     {
         $categoryUpdated = $categoryRepository->find($id);
 
-        $message = "Veuillez remplir les champs";
+        $form = $this->createForm(CategoryType::class, $categoryUpdated);
 
-        if ($request->isMethod('POST')) {
-
-            $title = $request->request->get('title');
-            $color = $request->request->get('color');
-
-
-            $categoryUpdated->setTitle($title);
-            $categoryUpdated->setColor($color);
-
-            if(!empty($categoryUpdated->getTitle())){
-                $entityManager->persist($categoryUpdated);
-                $entityManager->flush();
-                $message = "Catégorie bien modifiée";
-            } else
-                $message = "Attention, vous n'avez pas rempli tous les champs";
+        $form->handleRequest($request);
+        if($form->isSubmitted()){
+            $entityManager->persist($categoryUpdated);
+            $entityManager->flush();
         }
 
+        $formView = $form->createView();
+
         return $this->render('category_update.html.twig', [
-            'category' => $categoryUpdated,
-            'message' => $message
+            'formView' => $formView
         ]);
 
     }

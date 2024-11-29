@@ -96,9 +96,9 @@ class ArticleController extends AbstractController
     //je créé une méthode createArticle pour la création de mes articles
     //je créé un instance de classe de mon entité Article puisque je suis dans la création d'article et que je
     // veux pouvoir créer un nouvel article
-    //je génère un formulaire grace au Gabarit ArticleType dans mon terminal
+    //je génère un formulaire grace au Gabarit ArticleType dans mon terminal (avec make:form)
     //j'utilise la méthode createForm issu de la classe héritéé AbstractController
-    //j'utilise la méthode handleRequest en lui passant en paramètre $requeset : ça récupère la requête HTTP (POST ou
+    //j'utilise la méthode handleRequest en lui passant en paramètre $request : ça récupère la requête HTTP (POST ou
     // GET ou whatever)
     //condition : si le formulaire est bien soumis, alors je renseigne la date en BDD (la création de la date en BDD
     // se fera au submit, au moment d'envoyer les données en BDD) et
@@ -162,10 +162,8 @@ class ArticleController extends AbstractController
     //ainsi je cible quel article je souhaite modifier
     // j'utilise la méthode createForm pour récupérer un formulaire créér dans mon terminal grâce a AbstractController
     //je lui passe en paramètre le gabarit (mon ArticleType) et mon artcile updated.
-    //j'utilise la méthide handleRequest pour récupérer la requête HTTP (POST ici) de mon formulaire
-    //condition : si le formulaire est bien soumis, alors je renseigne la date en BDD (la création de la date en BDD
-    // se fera au submit, au moment d'envoyer les données en BDD) et
-    // je pré-sauvegarde et j'exécute la création de l'article en BDD
+    //j'utilise la méthode handleRequest pour récupérer la requête HTTP (POST ici) de mon formulaire
+    //condition : si le formulaire est bien soumis, je pré-sauvegarde et j'exécute la création de l'article en BDD
     //je créé une vue pour ce formulaire afin que celle ci soit lu dans mon fichier twig
     #[Route('article/update/{id}', 'article_update', ['id'=>'\d+'] )]
     public function updateArticle(int $id, ArticleRepository $articleRepository, EntityManagerInterface
@@ -178,7 +176,6 @@ class ArticleController extends AbstractController
 
         $form->handleRequest($request);
         if($form->isSubmitted()){
-            $articleUpdated->setCreatedAt(new \DateTime());
             $entityManager->persist($articleUpdated);
             $entityManager->flush();
         }

@@ -6,20 +6,6 @@
 
 {% block main %}
 
+    {{ form(formView) }}
 
-    <p>{{ message }}</p>
-
-
-
-    <form method="POST" action="{{ path('category_update', {id: category.id}) }}">
-
-        <label>Titre de la catégorie</label>
-        <input type="text" name="title" value="{{ category.title }}" /> <br> <br>
-
-        <label>Couleur de la catégorie</label>
-        <input type="color" name="color" value="{{ category.color }}"/> <br> <br>
-
-        <input type="submit"/>
-
-    </form>
 {% endblock main %}
